@@ -19,7 +19,7 @@ request.onsuccess = function(event) {
   
     // check if app is online, if yes run uploadBudget() function to send all local db data to api
     if (navigator.onLine) {
-      // uploadBudget();
+      uploadBudget();
     }
   };
   
@@ -57,7 +57,7 @@ function uploadBudget() {
     getAll.onsuccess = function() {
         // if there was data in indexedDb's store, let's send it to the api server
         if (getAll.result.length > 0) {
-        fetch('/api/transactions', {
+        fetch('/api/transaction', {
             method: 'POST',
             body: JSON.stringify(getAll.result),
             headers: {
@@ -78,13 +78,14 @@ function uploadBudget() {
             // clear all items in the object store
             transObjectStore.clear();
 
-            alert('All saved pizza has been submitted!');
+            alert('All saved transactions have been submitted!');
             })
             .catch(err => {
             console.log(err);
             });
         }
     };
+};
 
-    // more to come...
-}
+// Listen for network status change
+window.addEventListener('online', uploadBudget);
